@@ -126,7 +126,7 @@ class FoDiffusion:
 
     def sde_step(self, x, x_final, t, noise):
         drift = _extract_into_tensor(self.thetas, t, x.shape) * (x_final - x)
-        diffusion = _extract_into_tensor(self.sigmas, t, x.shape) * (x - x_final)
+        diffusion = _extract_into_tensor(np.sqrt(self.sigmas), t, x.shape) * (x - x_final)
         return x + drift * self.dt + diffusion * math.sqrt(self.dt) * noise
 
     def forward_step(
@@ -151,7 +151,7 @@ class FoDiffusion:
         
         noise = torch.randn_like(x)
         if sample_type == "EM":
-            x = self.sde_step(x, x_final, t, noise)
+            x = self.sde_step(x, x_final, t_next, noise)
         elif sample_type == "MC":
             x = (x - x_final) * self.expo_normal_transition(t, t_next, noise) + x_final
         elif sample_type == "NMC":
