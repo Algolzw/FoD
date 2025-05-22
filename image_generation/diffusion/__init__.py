@@ -13,7 +13,7 @@ def create_diffusion(
         sigma_schedule = "none"
         
     thetas = sd.get_named_schedule(theta_schedule, diffusion_steps)
-    sigmas = sd.get_named_schedule(sigma_schedule, diffusion_steps)
+    sigma2s = sd.get_named_schedule(sigma_schedule, diffusion_steps)
 
     if prediction=="final":
         model_type = sd.ModelType.FINAL_X
@@ -27,6 +27,6 @@ def create_diffusion(
 
     return sd.FoDiffusion(
         thetas=thetas,
-        sigmas=sigmas,
+        sigma2s=sigma2s,
         model_type=model_type,
     )

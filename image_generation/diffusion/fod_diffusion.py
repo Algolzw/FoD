@@ -72,29 +72,29 @@ def to_tensor(nparray):
 
 
 class FoDiffusion:
-    def __init__(self, thetas, sigmas, model_type, sigmas_scale=1.):
+    def __init__(self, thetas, sigma2s, model_type, sigmas_scale=1.):
         super().__init__()
         self.model_type = model_type
 
         thetas = np.array(thetas, dtype=np.float64)
-        sigmas = np.array(sigmas, dtype=np.float64)
+        sigma2s = np.array(sigma2s, dtype=np.float64)
         self.thetas = np.append(0.0, thetas)
-        if np.sum(sigmas) > 0:
-            sigmas = sigmas_scale * sigmas / np.sum(sigmas) # normalize sigmas
-        self.sigmas = np.append(0.0, sigmas)
-        expo_mean = -(self.thetas + 0.5 * self.sigmas)
+        if np.sum(sigma2s) > 0:
+            sigma2s = sigmas_scale * sigma2s / np.sum(sigma2s) # normalize sigma squares
+        self.sigma2s = np.append(0.0, sigma2s)
+        expo_mean = -(self.thetas + 0.5 * self.sigma2s)
 
         self.thetas_cumsum = np.cumsum(self.thetas)
-        self.sigmas_cumsum = np.cumsum(self.sigmas)
-        expo_mean_cumsum = -(self.thetas_cumsum + 0.5 * self.sigmas_cumsum)
+        self.sigma2s_cumsum = np.cumsum(self.sigma2s)
+        expo_mean_cumsum = -(self.thetas_cumsum + 0.5 * self.sigma2s_cumsum)
 
         self.dt = math.log(0.001) / expo_mean_cumsum[-1]
 
         #### sqrt terms  ####
         self.expo_mean = expo_mean * self.dt
-        self.sqrt_expo_variance = np.sqrt(self.sigmas * self.dt)
+        self.sqrt_expo_variance = np.sqrt(self.sigma2s * self.dt)
         self.expo_mean_cumsum = expo_mean_cumsum * self.dt
-        self.sqrt_expo_variance_cumsum = np.sqrt(self.sigmas_cumsum * self.dt)
+        self.sqrt_expo_variance_cumsum = np.sqrt(self.sigma2s_cumsum * self.dt)
 
         self.num_timesteps = int(thetas.shape[0])
 
@@ -118,15 +118,15 @@ class FoDiffusion:
         assert noise is not None
         expo_mean_cumsum = _extract_into_tensor(self.expo_mean_cumsum, t, noise.shape) \
                             - _extract_into_tensor(self.expo_mean_cumsum, s, noise.shape)
-        expo_variance_cumsum = _extract_into_tensor(self.sigmas_cumsum * self.dt, t, noise.shape) \
-                            - _extract_into_tensor(self.sigmas_cumsum * self.dt, s, noise.shape)
+        expo_variance_cumsum = _extract_into_tensor(self.sigma2s_cumsum * self.dt, t, noise.shape) \
+                            - _extract_into_tensor(self.sigma2s_cumsum * self.dt, s, noise.shape)
 
         return torch.exp(expo_mean_cumsum + torch.sqrt(expo_variance_cumsum) * noise)
 
 
     def sde_step(self, x, x_final, t, noise):
         drift = _extract_into_tensor(self.thetas, t, x.shape) * (x_final - x)
-        diffusion = _extract_into_tensor(np.sqrt(self.sigmas), t, x.shape) * (x - x_final)
+        diffusion = _extract_into_tensor(np.sqrt(self.sigma2s), t, x.shape) * (x - x_final)
         return x + drift * self.dt + diffusion * math.sqrt(self.dt) * noise
 
     def forward_step(
