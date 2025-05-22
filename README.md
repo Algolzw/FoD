@@ -1,5 +1,6 @@
-## Forward-only Diffusion Probabilistic Models (FoD)<br><sub>Official PyTorch Implementation
+## Forward-only Diffusion Probabilistic Models (FoD)<br><sub>Official PyTorch Implementation</sub>
 
+[Project Page](https://algolzw.github.io/fod)
 ![fod](figs/overview.png)
 
 ## How to Run the Code?
@@ -8,8 +9,8 @@
 
 * OS: Ubuntu 20.04
 * nvidia:
-	- cuda: 11.4
-* python 3.8
+	- cuda: 12.2
+* python 3.11
 
 ### Install
 
