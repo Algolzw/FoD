@@ -1,6 +1,6 @@
 ## Forward-only Diffusion Probabilistic Models (FoD)<br><sub>Official PyTorch Implementation</sub>
 
-[Project Page](https://algolzw.github.io/fod)
+[Project Page](https://algolzw.github.io/fod) | [Paper](https://arxiv.org/abs/2505.16733)
 ![fod](figs/overview.png)
 
 ## How to Run the Code?
@@ -126,6 +126,18 @@ python scripts/evaluator.py cifar_train.npz samples/cifar10/U-Net-0500000-seed-0
 #### Contact
 If you have any question, please contact: ziwei.luo@it.uu.se
 
+### Citations
+If our code helps your research or work, please consider citing our paper.
+The following are BibTeX references:
+
+```
+@article{luo2025forward,
+  title={Forward-only Diffusion Probabilistic Models},
+  author={Luo, Ziwei and Gustafsson, Fredrik K and Sj{\"o}lund, Jens and Sch{\"o}n, Thomas B},
+  journal={arXiv preprint arXiv:2505.16733},
+  year={2025}
+}
+```
 
 #### --- Thanks for your interest! --- ####
 
