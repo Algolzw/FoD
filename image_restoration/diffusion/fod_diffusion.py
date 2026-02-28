@@ -155,7 +155,7 @@ class FoDiffusion:
         elif sample_type == "MC":
             x = (x - x_final) * self.expo_normal_transition(t, t_next, noise) + x_final
         elif sample_type == "NMC":
-            x = (x - x_final) * self.expo_normal_cumsum(t, t_next, noise) + x_final
+            x = (x - x_final) * self.expo_normal_cumsum(t_next, noise) + x_final
         return x
 
     # forward process to get x(T) from x(0)
