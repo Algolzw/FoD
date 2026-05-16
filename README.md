@@ -30,7 +30,7 @@ Here we provide an example for **image deraining** task, but can be changed to a
 
 #### Dataset Preparation
 
-Download [training](http://www.icst.pku.edu.cn/struct/att/RainTrainH.zip) and [testing](http://www.icst.pku.edu.cn/struct/att/Rain100H.zip) datasets and process it in a way such that rain images and no-rain images are in separately directories, as
+Download [dataset](https://drive.google.com/file/d/1YQ3PNFY0W1-K0lQyCO3kY29cMB94P-xl/view?usp=sharing) and process it in a way such that rain images and no-rain images are in separately directories, as
 
 ```bash
 #### for training dataset ####
