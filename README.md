@@ -1,4 +1,4 @@
-## Forward-only Diffusion Probabilistic Models (FoD)<br><sub>Official PyTorch Implementation</sub>
+## Efficient Image Restoration with State-Dependent Forward Diffusion (FoD)<br><sub>Official PyTorch Implementation</sub>
 
 [Project Page](https://algolzw.github.io/fod) | [Paper](https://arxiv.org/abs/2505.16733)
 ![fod](figs/overview.png)
